@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="64" fill="#f5f0e8"/>
+  <rect x="64" y="64" width="384" height="384" rx="32" fill="#fff" opacity="0.6"/>
+  <rect x="96" y="96" width="320" height="320" rx="16" fill="#f5f0e8" stroke="#8b6914" stroke-width="3"/>
+  <line x1="144" y1="168" x2="368" y2="168" stroke="#2c2416" stroke-width="3" opacity="0.3"/>
+  <line x1="144" y1="208" x2="320" y2="208" stroke="#2c2416" stroke-width="3" opacity="0.2"/>
+  <line x1="144" y1="248" x2="344" y2="248" stroke="#2c2416" stroke-width="3" opacity="0.2"/>
+  <line x1="144" y1="288" x2="290" y2="288" stroke="#2c2416" stroke-width="3" opacity="0.15"/>
+  <text x="256" y="390" text-anchor="middle" font-family="serif" font-size="36" fill="#8b6914" opacity="0.5">PDF</text>
+</svg>

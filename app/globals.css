@@ -1,0 +1,580 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #f5f0e8;
+  --color-foreground: #2c2416;
+  --color-ink: #2c2416;
+  --color-ink-light: #5a4d3a;
+  --color-ink-muted: #8a7d6b;
+  --color-cream: #f5f0e8;
+  --color-cream-dark: #e8dfd0;
+  --color-cream-light: #faf7f0;
+  --color-warm: #d4c5a9;
+  --color-warm-dark: #b8a88a;
+  --color-accent: #8b6914;
+  --color-accent-light: #c4981a;
+  --color-desk: #3d2b1f;
+  --color-desk-light: #5a4030;
+  --color-glass: rgba(245, 240, 232, 0.85);
+  --font-serif: "Cormorant Garamond", "Georgia", serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+:root {
+  /* Paper surface */
+  --paper-radius: 2px;
+  --paper-bg: #f5f0e8;
+  --paper-bg-light: #faf7f0;
+  --paper-bg-alt: #ebe4d4;
+  --paper-bg-gradient: linear-gradient(180deg, #f5f0e8 0%, #e8dfd0 50%, #d4c5a9 100%);
+
+  /* Shadows */
+  --paper-shadow-sm: 0 1px 3px rgba(44, 36, 22, 0.08), 0 1px 2px rgba(44, 36, 22, 0.06);
+  --paper-shadow-md: 0 4px 12px rgba(44, 36, 22, 0.1), 0 2px 4px rgba(44, 36, 22, 0.06);
+  --paper-shadow-lg: 0 12px 40px rgba(44, 36, 22, 0.15), 0 4px 12px rgba(44, 36, 22, 0.08);
+  --paper-shadow-book:
+    0 2px 4px rgba(44, 36, 22, 0.06),
+    0 8px 24px rgba(44, 36, 22, 0.1),
+    0 24px 60px rgba(44, 36, 22, 0.12),
+    -2px 0 8px rgba(44, 36, 22, 0.04),
+    2px 0 8px rgba(44, 36, 22, 0.04);
+
+  /* Text */
+  --text-primary: #2c2416;
+  --text-secondary: #5a4d3a;
+  --text-muted: #8a7d6b;
+  --text-on-dark: #f5f0e8;
+
+  /* Accent */
+  --accent: #8b6914;
+  --accent-hover: #a07a16;
+  --accent-light: #c4981a;
+
+  /* Desk */
+  --desk-gradient: radial-gradient(ellipse at 50% 30%, #5a4030 0%, #3d2b1f 100%);
+
+  /* Borders */
+  --border-subtle: rgba(44, 36, 22, 0.08);
+  --border-accent: rgba(139, 105, 20, 0.15);
+
+  /* Shadows (semantic) */
+  --shadow-sm: 0 1px 3px rgba(44, 36, 22, 0.08);
+  --shadow-md: 0 4px 12px rgba(44, 36, 22, 0.1);
+  --shadow-lg: 0 8px 32px rgba(44, 36, 22, 0.18);
+
+  /* Transition */
+  --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Annotation */
+  --note-delete: #a0522d;
+  --note-delete-hover: #8b3a1a;
+  --danger: #dc143c;
+  --success: #228b22;
+
+  /* Glass */
+  --popover-bg: #f5f0e8;
+  --popover-border: rgba(139, 105, 20, 0.15);
+  --popover-shadow: 0 8px 32px rgba(44, 36, 22, 0.18);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(139, 105, 20, 0.25);
+  color: var(--color-ink);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-warm-dark);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink-muted);
+}
+
+/* ============================================
+   TEXTURE SYSTEM — 9 Procedural Paper Textures
+   Textures are now inline in TextureEngine.tsx
+   ============================================ */
+
+/* Edge lighting effect */
+.paper-edge-light {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 3;
+  background: 
+    linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 40%),
+    linear-gradient(315deg, rgba(255,255,255,0.06) 0%, transparent 30%);
+}
+
+/* Vignette overlay */
+.paper-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 4;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 50%,
+    rgba(44, 36, 22, 0.06) 80%,
+    rgba(44, 36, 22, 0.12) 100%
+  );
+}
+
+/* Paper depth — thickness illusion */
+.paper-depth {
+  position: relative;
+}
+
+.paper-depth::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 2px;
+  right: 2px;
+  height: 4px;
+  background: linear-gradient(
+    to bottom,
+    rgba(44, 36, 22, 0.08),
+    rgba(44, 36, 22, 0.02)
+  );
+  border-radius: 0 0 var(--paper-radius) var(--paper-radius);
+  z-index: -1;
+}
+
+/* ============================================
+   READER STYLES
+   Textures are now inline in TextureEngine.tsx
+   ============================================ */
+
+/* Glass morphism toolbar */
+.glass-toolbar {
+  background: var(--color-glass);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 4px 24px rgba(44, 36, 22, 0.08),
+    0 1px 2px rgba(44, 36, 22, 0.04);
+}
+
+/* Sidebar */
+.sidebar-panel {
+  background: rgba(245, 240, 232, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-right: 1px solid rgba(44, 36, 22, 0.08);
+}
+
+/* Smooth texture transition */
+.texture-transition {
+  transition: background-color 0.6s var(--transition-smooth);
+}
+
+/* Thumbnail */
+.thumbnail-item {
+  border: 2px solid transparent;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s var(--transition-smooth);
+}
+
+.thumbnail-item:hover {
+  border-color: var(--color-warm-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--paper-shadow-sm);
+}
+
+.thumbnail-item.active {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px rgba(139, 105, 20, 0.2);
+}
+
+/* ============================================
+   DARK THEME — [data-theme="dark"] overrides
+   ============================================ */
+[data-theme="dark"] {
+  --color-background: #0a0a0a;
+  --color-foreground: #ededed;
+  --color-ink: #e0d8c8;
+  --color-ink-light: #b8a88a;
+  --color-ink-muted: #7a6d5a;
+  --color-cream: #1a1610;
+  --color-cream-dark: #12100a;
+  --color-cream-light: #2a2418;
+  --color-warm: #3a3020;
+  --color-warm-dark: #5a4a30;
+  --color-accent: #c4981a;
+  --color-accent-light: #dab530;
+  --color-desk: #1a1208;
+  --color-desk-light: #2a1c10;
+  --color-glass: rgba(20, 16, 10, 0.9);
+
+  /* Semantic tokens — dark */
+  --paper-bg: #1a1610;
+  --paper-bg-light: #2a2418;
+  --paper-bg-alt: #221a10;
+  --paper-bg-gradient: linear-gradient(180deg, #1a1610 0%, #12100a 50%, #0a0805 100%);
+
+  --text-primary: #e0d8c8;
+  --text-secondary: #b8a88a;
+  --text-muted: #7a6d5a;
+  --text-on-dark: #e0d8c8;
+
+  --accent: #c4981a;
+  --accent-hover: #dab530;
+  --accent-light: #dab530;
+
+  --desk-gradient: radial-gradient(ellipse at 50% 30%, #2a1c10 0%, #1a1208 100%);
+
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-accent: rgba(196, 152, 26, 0.2);
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+  --note-delete: #cd853f;
+  --note-delete-hover: #daa520;
+
+  --popover-bg: #1a1610;
+  --popover-border: rgba(196, 152, 26, 0.2);
+  --popover-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+  --paper-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --paper-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.25);
+  --paper-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.3);
+  --paper-shadow-book:
+    0 2px 4px rgba(0, 0, 0, 0.25),
+    0 8px 24px rgba(0, 0, 0, 0.35),
+    0 24px 60px rgba(0, 0, 0, 0.45),
+    -2px 0 8px rgba(0, 0, 0, 0.15),
+    2px 0 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Dark glass toolbar */
+[data-theme="dark"] .glass-toolbar {
+  background: rgba(20, 16, 10, 0.9);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.4),
+    0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Dark sidebar */
+[data-theme="dark"] .sidebar-panel {
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Dark vignette */
+[data-theme="dark"] .paper-vignette {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 50%,
+    rgba(0, 0, 0, 0.15) 80%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+}
+
+/* Dark edge light — reduced */
+[data-theme="dark"] .paper-edge-light {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 40%),
+    linear-gradient(315deg, rgba(255,255,255,0.02) 0%, transparent 30%);
+}
+
+/* Dark thumbnail */
+[data-theme="dark"] .thumbnail-item:hover {
+  border-color: #5a4a30;
+}
+
+[data-theme="dark"] .thumbnail-item.active {
+  border-color: #c4981a;
+  box-shadow: 0 0 0 2px rgba(196, 152, 26, 0.3);
+}
+
+/* Dark selection */
+[data-theme="dark"] ::selection {
+  background: rgba(196, 152, 26, 0.35);
+  color: #ededed;
+}
+
+/* Dark scrollbar */
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #5a4a30;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #7a6d5a;
+}
+.landing-gradient {
+  background: linear-gradient(
+    180deg,
+    var(--color-cream) 0%,
+    var(--color-cream-dark) 50%,
+    var(--color-warm) 100%
+  );
+}
+
+.hero-paper {
+  box-shadow: var(--paper-shadow-book);
+  transition: transform 0.2s var(--transition-smooth), box-shadow 0.2s var(--transition-smooth);
+}
+
+.hero-paper:hover {
+  transform: rotate(-2deg) scale(1.02);
+  box-shadow: 
+    0 16px 50px rgba(44, 36, 22, 0.18),
+    0 6px 16px rgba(44, 36, 22, 0.1);
+}
+
+/* Texture card hover */
+.texture-card {
+  transition: all 0.35s var(--transition-smooth);
+}
+
+.texture-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--paper-shadow-lg);
+}
+
+/* Status chips */
+.status-chip {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+
+.status-available {
+  background: rgba(34, 139, 34, 0.12);
+  color: #228b22;
+}
+
+.status-new {
+  background: rgba(139, 105, 20, 0.12);
+  color: var(--color-accent);
+}
+
+.status-coming {
+  background: rgba(138, 125, 107, 0.15);
+  color: var(--color-ink-muted);
+}
+
+/* ============================================
+   DARK THEME — Landing page overrides
+   ============================================ */
+[data-theme="dark"] .hero-paper:hover {
+  box-shadow:
+    0 16px 50px rgba(0, 0, 0, 0.4),
+    0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="dark"] .texture-card:hover {
+  box-shadow: var(--paper-shadow-lg);
+}
+
+[data-theme="dark"] .status-available {
+  background: rgba(34, 139, 34, 0.2);
+  color: #5cb85c;
+}
+
+[data-theme="dark"] .status-new {
+  background: rgba(196, 152, 26, 0.2);
+  color: #dab530;
+}
+
+[data-theme="dark"] .status-coming {
+  background: rgba(184, 168, 138, 0.15);
+  color: #b8a88a;
+}
+
+/* Screen reader only — visually hidden but accessible to assistive technology */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+  @page {
+    margin: 0.5in;
+    size: auto;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Hide all UI chrome */
+  .glass-toolbar,
+  .sidebar-panel,
+  [data-sel-toolbar],
+  .fixed,
+  .sr-only {
+    display: none !important;
+  }
+
+  /* Show only the PDF content */
+  .paper-depth {
+    box-shadow: none !important;
+    filter: none !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    opacity: 1 !important;
+  }
+
+  .paper-edge-light,
+  .paper-vignette {
+    display: none !important;
+  }
+
+  .texture-transition {
+    background-color: white !important;
+    transition: none !important;
+  }
+
+  /* Ensure annotation highlights print */
+  [data-annotation-overlay] {
+    opacity: 0.35 !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Ensure canvases print */
+  canvas {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Remove margin from reader wrapper */
+  [style*="margin-left"] {
+    margin-left: 0 !important;
+    transition: none !important;
+  }
+}
+
+/* PDF text layer — invisible but selectable text overlay */
+.textLayer {
+  position: absolute;
+  text-align: initial;
+  inset: 0;
+  overflow: hidden;
+  line-height: 1;
+  text-size-adjust: none;
+  forced-color-adjust: none;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+
+.textLayer > span,
+.textLayer > br {
+  color: transparent !important;
+  background: transparent !important;
+  position: absolute;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+  pointer-events: auto;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.textLayer > span::selection,
+.textLayer > span::-moz-selection {
+  background: rgba(139, 105, 20, 0.4) !important;
+  color: transparent !important;
+}
+
+/* Mobile-specific overrides */
+@media (max-width: 640px) {
+  .sidebar-panel {
+    width: min(85vw, 300px) !important;
+  }
+}
+
+/* Tablet breakpoint */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .sidebar-panel {
+    width: 280px !important;
+  }
+}
+
+/* Disable tap highlight on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Touch-friendly scrollbar */
+@media (hover: none) and (pointer: coarse) {
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+}

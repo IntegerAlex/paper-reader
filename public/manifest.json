@@ -1,0 +1,31 @@
+{
+  "name": "Paper Reader",
+  "short_name": "PaperReader",
+  "description": "A premium PDF reading experience that makes digital documents feel like beautifully printed books.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#3d2b1f",
+  "theme_color": "#8b6914",
+  "orientation": "any",
+  "categories": ["books", "education", "productivity"],
+  "icons": [
+    {
+      "src": "/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable.svg",
+      "sizes": "180x180",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
